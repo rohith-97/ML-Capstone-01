@@ -28,20 +28,28 @@ title = "Diabetes Risk Predictor"
 description = "Enter patient data to get a diabetes probability and simple label."
 
 inputs = [
-    gr.inputs.Dropdown(['Male', 'Female', 'Other'], label='gender'),
-    gr.inputs.Number(default=50, label='age'),
-    gr.inputs.Checkbox(label='hypertension (yes=checked)'),
-    gr.inputs.Checkbox(label='heart_disease (yes=checked)'),
-    gr.inputs.Textbox(lines=1, placeholder='e.g. never, current, former', label='smoking_history'),
-    gr.inputs.Number(default=25.0, label='bmi'),
-    gr.inputs.Number(default=5.5, label='HbA1c_level'),
-    gr.inputs.Number(default=100.0, label='blood_glucose_level'),
+    gr.Dropdown(['Male', 'Female', 'Other'], label='gender', value='Male'),
+    gr.Number(value=50, label='age'),
+    gr.Checkbox(label='hypertension (yes=checked)', value=False),
+    gr.Checkbox(label='heart_disease (yes=checked)', value=False),
+    gr.Dropdown(['never', 'current', 'former'], label='smoking_history', value='never'),
+    gr.Number(value=25.0, label='bmi'),
+    gr.Number(value=5.5, label='HbA1c_level'),
+    gr.Number(value=100.0, label='blood_glucose_level'),
 ]
 
-outputs = [gr.outputs.Number(label='diabetes_probability'), gr.outputs.Label(label='label')]
+outputs = [
+    gr.Number(label='diabetes_probability'),
+    gr.Label(label='label')
+]
 
-iface = gr.Interface(fn=predict_gradio, inputs=inputs, outputs=outputs,
-                     title=title, description=description, allow_flagging='never')
+iface = gr.Interface(
+    fn=predict_gradio,
+    inputs=inputs,
+    outputs=outputs,
+    title=title,
+    description=description
+)
 
 if __name__ == '__main__':
     iface.launch(server_name='0.0.0.0', server_port=7860)
